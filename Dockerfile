@@ -30,7 +30,7 @@ RUN pip install --no-cache-dir sqlmap
 # ProjectDiscovery 工具：nuclei + httpx（从官方 release 拉二进制，避免装 Go）
 # 国内构建优先 ghfast / ghproxy，失败再直连 GitHub。zip 无效则失败，避免镜像 silently 缺工具。
 # TARGETARCH 由 buildkit 自动注入(arm64/amd64)
-ARG TARGETARCH
+ARG TARGETARCH=arm64
 RUN set -eux; \
     NUCLEI_VER=3.3.7; HTTPX_VER=1.6.9; \
     cd /tmp; \
@@ -48,12 +48,12 @@ RUN set -eux; \
       return 1; \
     }; \
     fetch_zip nuclei.zip \
-      "https://ghfast.top/https://github.com/projectdiscovery/nuclei/releases/download/v${NUCLEI_VER}/nuclei_${NUCLEI_VER}_linux_${TARGETARCH}.zip" \
-      "https://ghproxy.net/https://github.com/projectdiscovery/nuclei/releases/download/v${NUCLEI_VER}/nuclei_${NUCLEI_VER}_linux_${TARGETARCH}.zip" \
+      "https://github.com/projectdiscovery/nuclei/releases/download/v${NUCLEI_VER}/nuclei_${NUCLEI_VER}_linux_${TARGETARCH}.zip" \
+      "https://github.com/projectdiscovery/nuclei/releases/download/v${NUCLEI_VER}/nuclei_${NUCLEI_VER}_linux_${TARGETARCH}.zip" \
       "https://github.com/projectdiscovery/nuclei/releases/download/v${NUCLEI_VER}/nuclei_${NUCLEI_VER}_linux_${TARGETARCH}.zip"; \
     fetch_zip httpx.zip \
-      "https://ghfast.top/https://github.com/projectdiscovery/httpx/releases/download/v${HTTPX_VER}/httpx_${HTTPX_VER}_linux_${TARGETARCH}.zip" \
-      "https://ghproxy.net/https://github.com/projectdiscovery/httpx/releases/download/v${HTTPX_VER}/httpx_${HTTPX_VER}_linux_${TARGETARCH}.zip" \
+      "https://github.com/projectdiscovery/httpx/releases/download/v${HTTPX_VER}/httpx_${HTTPX_VER}_linux_${TARGETARCH}.zip" \
+      "https://github.com/projectdiscovery/httpx/releases/download/v${HTTPX_VER}/httpx_${HTTPX_VER}_linux_${TARGETARCH}.zip" \
       "https://github.com/projectdiscovery/httpx/releases/download/v${HTTPX_VER}/httpx_${HTTPX_VER}_linux_${TARGETARCH}.zip"; \
     unzip -o nuclei.zip nuclei -d /usr/local/bin/; \
     unzip -o httpx.zip httpx -d /usr/local/bin/; \
